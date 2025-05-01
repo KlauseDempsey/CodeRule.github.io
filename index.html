@@ -1,0 +1,893 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>代码编写规范（webGIS团队协作版）</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1e6a416e-6161-8071-99bc-ed024b7ba5b9" class="page sans"><header><img class="page-cover-image" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb" style="object-position:center 50%"/><h1 class="page-title">代码编写规范（webGIS团队协作版）</h1><p class="page-description"></p></header><div class="page-body"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1e6a416e-6161-8024-bfbf-f91043461108"><div style="font-size:1.5em"><span class="icon">✏️</span></div><div style="width:100%"><p id="1e6a416e-6161-803e-859c-ea493c708087" class="">编写人：陈宇桐   |    编写时间：2025年4月</p></div></figure><blockquote id="1e6a416e-6161-80c6-a950-e2a1e69bbbb2" class=""><em>声明：本编写规范专为 WebGIS 项目团队的内部协作、开发与管理制定，所有内容仅限于团队成员使用。未经项目负责人或团队授权，严禁对外公开、传播或分享。</em></blockquote><h1 id="1e6a416e-6161-809d-9995-c25fd16cbd3a" class="">写在前面</h1><ol type="1" id="1e6a416e-6161-807f-aaef-ff58b7212af8" class="numbered-list" start="1"><li>所有代码在比赛与开发过程中<mark class="highlight-orange"><strong>不得以任何形式外传或开源</strong></mark><mark class="highlight-default">，不可</mark>在公共平台、社交媒体或其他未经授权的渠道泄露相关代码及文档；</li></ol><ol type="1" id="1e6a416e-6161-80a8-8105-f209c27c1cc3" class="numbered-list" start="2"><li>团队所有数据（包括原始数据、分析数据、地图数据等）仅限于团队内部使用，<mark class="highlight-orange"><strong>严禁外泄</strong></mark>，不得以任何形式透露给未经授权的个人或机构，任何数据的共享或发布必须经过团队批准；</li></ol><ol type="1" id="1e6a416e-6161-80e8-bece-f7ab9138303e" class="numbered-list" start="3"><li>所有源数据必须基于<mark class="highlight-orange"><strong>实测数据、开源数据集或官方授权</strong></mark>的数据源进行获取，不得随意使用<mark class="highlight-blue_background">未经验证的第三方数据或AI生成的数据</mark>；如果项目需求确实需要使用模拟数据，必须提前与团队进行充分讨论和确认；</li></ol><ol type="1" id="1e6a416e-6161-8026-8984-c2ffa423033a" class="numbered-list" start="4"><li>在进行数据可视化与地图制图时，<mark class="highlight-orange"><strong>不得将原始数据上传至任何AI平台或第三方工具</strong></mark>。原始数据的上传可能造成数据泄露，严重时可能涉及法律责任；</li></ol><ol type="1" id="1e6a416e-6161-8011-b2ca-e9465313ae48" class="numbered-list" start="5"><li>开发过程中可以使用AI作为辅助工具，以提高开发效率，但<mark class="highlight-orange"><strong>不得将其视为唯一解决方案</strong></mark>。开发者应保持对代码质量和业务逻辑的高度负责：<ul id="1e6a416e-6161-8002-8eb0-fdebfbd4f7b1" class="bulleted-list"><li style="list-style-type:disc">开发者必须明确理解核心逻辑，在代码中提供详细的注释，尤其是在关键步骤或复杂算法处；</li></ul><ul id="1e6a416e-6161-804c-be6c-cd116e2c2efb" class="bulleted-list"><li style="list-style-type:disc"><strong>合理使用AI工具</strong>，避免对工具产生过度依赖，能独立思考和分析问题。</li></ul></li></ol><ol type="1" id="1e6a416e-6161-8032-9d06-cb7824584127" class="numbered-list" start="6"><li>所有开发成果需保存在统一仓库，定期同步代码与模板，定期检查版本管理，自觉配合开发进度与工作内容的透明化，保证团队协作的高效性。</li></ol><h1 id="1e6a416e-6161-80bd-9372-c1b393bbbbdd" class="">HTML编码规范</h1><h2 id="1e6a416e-6161-8039-ac19-c84e48b609d1" class=""><strong>1. 使用 HTML5 语义化标签编写文档</strong></h2><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1e6a416e-6161-80bd-86f8-ddd1555289a9"><div style="font-size:1.5em"><span class="icon">📌</span></div><div style="width:100%"><p id="1e6a416e-6161-80a5-8702-f3051f86bf4c" class="">语义化标签<code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;footer&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;nav&gt;</code> 能够提升网页网页的可访问性，还能够改善 SEO（搜索引擎优化）。</p></div></figure><p id="1e6a416e-6161-80cf-ab82-e4ea0b151ac9" class="">优先使用 HTML5 语义化标签，避免完全使用<code>&lt;div&gt;</code> 和 <code>&lt;span&gt;</code> 来替代语义化标签，除非确实没有合适的替代标签。</p><p id="1e6a416e-6161-80af-aca4-fa11f95f2b56" class="">
+</p><p id="1e6a416e-6161-8040-a95a-ca8b428682d9" class="">错误案例（完全使用div，无语义化可读性）</p><p id="1e6a416e-6161-8045-9fb2-c3cc5dad0052" class="">正确案例：</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8089-8128-f98b96bdaee2" class="code"><code class="language-HTML">&lt;header&gt;
+    &lt;h1&gt;欢迎来到我的网站&lt;/h1&gt;
+    &lt;nav&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&quot;#home&quot;&gt;首页&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;#about&quot;&gt;关于我们&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;
+&lt;/header&gt;
+&lt;main&gt;
+    &lt;section&gt;
+        &lt;h2&gt;webGIS&lt;/h2&gt;
+        &lt;p&gt;我们提供高质量web开发服务&lt;/p&gt;
+    &lt;/section&gt;
+&lt;/main&gt;
+&lt;footer&gt;
+    &lt;p&gt;&amp;copy; 2025 xxx&lt;/p&gt;
+&lt;/footer&gt;</code></pre><h2 id="1e6a416e-6161-8019-975f-ca29ac2c9eb9" class=""><strong>2. 标签嵌套合法</strong></h2><p id="1e6a416e-6161-803d-9b5e-c5aa6dedf08b" class="">所有标签必须正确闭合。避免出现不成对的标签或不符合 HTML 规范的嵌套。</p><p id="1e6a416e-6161-801a-89d7-df861a449e7b" class="">
+</p><p id="1e6a416e-6161-8057-a4c4-e814e4c4e1d5" class="">错误案例：</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-80f1-98bd-dc2a94f5f6d3" class="code"><code class="language-HTML">&lt;div&gt;
+    &lt;p&gt;这是一个段落，段落的内容。&lt;/a&gt; &lt;!-- 错误：标签未闭合 --&gt;
+    &lt;a href=&quot;#&quot;&gt;链接&lt;/p&gt; &lt;!-- 错误：&lt;a&gt;标签不能包含 &lt;p&gt; 标签 --&gt;
+&lt;/div&gt;</code></pre><p id="1e6a416e-6161-80f1-8b07-e400b1a93dca" class="">正确案例：</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-808f-b7d7-d2e42378b19f" class="code"><code class="language-HTML">&lt;div&gt;
+    &lt;p&gt;这是一个段落，段落的内容。&lt;/p&gt;
+    &lt;a href=&quot;#&quot;&gt;链接&lt;/a&gt;
+&lt;/div&gt;</code></pre><h2 id="1e6a416e-6161-8074-b3ec-f0477cf5d579" class=""><strong>3. ID与Class命名规范</strong></h2><p id="1e6a416e-6161-8024-a8f6-f0e71a319632" class="">ID命名：应该是唯一的，用于标识一个特定的元素；使用有意义的名称，反映该元素的作用或内容；必须遵循 <code>kebab-case</code>（例如：<code>#main-header</code>, <code>#login-form</code>），使用小写字母和连字符（<code>-</code>）。</p><p id="1e6a416e-6161-8025-b4b7-f78295b3d2e6" class="">
+</p><p id="1e6a416e-6161-80f4-9bcf-d7d48a94a4c8" class="">错误案例：</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8077-91ed-f84b22de4ab2" class="code"><code class="language-HTML">&lt;div id=&quot;MainHeader&quot;&gt;
+    &lt;h1&gt;网站标题&lt;/h1&gt;
+&lt;/div&gt;</code></pre><p id="1e6a416e-6161-80bd-977c-e463879b406c" class="">正确案例：</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-80c0-b83a-cb0094aa20df" class="code"><code class="language-HTML">&lt;div id=&quot;main-header&quot;&gt;
+    &lt;h1&gt;网站标题&lt;/h1&gt;
+&lt;/div&gt;</code></pre><p id="1e6a416e-6161-80c2-9e40-deb991f10044" class="">
+</p><p id="1e6a416e-6161-8077-b5f3-c3c4b2c1b7d4" class="">Class命名：使用具有语义的类名，并且类名应符合 <code>kebab-case</code> 规范；避免使用太笼统或过于常见的类名（如：<code>.box</code>, <code>.container</code>），应尽可能具体。</p><p id="1e6a416e-6161-80c6-ba52-eae507b6266f" class="">
+</p><p id="1e6a416e-6161-8085-b56b-dec66e08dabc" class="">错误案例：</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8030-baa9-dc86d401900c" class="code"><code class="language-HTML">&lt;div class=&quot;box&quot;&gt;
+    &lt;a href=&quot;#&quot;&gt;首页&lt;/a&gt;
+&lt;/div&gt;</code></pre><p id="1e6a416e-6161-80a8-95d6-f7dff5e7da7e" class="">正确案例：</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-80c2-8a62-c89d33e8c4dd" class="code"><code class="language-HTML">&lt;div class=&quot;nav-bar&quot;&gt;
+    &lt;a href=&quot;#&quot;&gt;首页&lt;/a&gt;
+    &lt;a href=&quot;#&quot;&gt;关于我们&lt;/a&gt;
+&lt;/div&gt;</code></pre><p id="1e6a416e-6161-8013-a968-f563b5217d57" class="">
+</p><h2 id="1e6a416e-6161-8031-b186-d49335032ddc" class="">4. 严禁使用内联样式！！！</h2><p id="1e6a416e-6161-80da-aeb5-cca5dc44c3e3" class="">不要在 HTML 中使用内联样式。所有样式应放在外部 CSS 文件中，或者使用 <code>&lt;style&gt;</code> 标签内嵌 CSS（仅限小范围的样式调整）。<br/><br/></p><p id="1e6a416e-6161-8078-aac4-e4a0f46c4905" class="">错误案例：<br/>绝对绝对绝对不可以写这样的样式：<br/></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-80b3-a87d-ef248e0d5582" class="code"><code class="language-HTML">&lt;div style=&quot;width: 100%; margin: 0 auto;&quot;&gt;
+    &lt;h1&gt;欢迎来到我的网站&lt;/h1&gt;
+&lt;/div&gt;</code></pre><h2 id="1e6a416e-6161-8013-ad52-d3ec1529972e" class="">5.规范注释</h2><ul id="1e6a416e-6161-80f8-a4b9-f925464953b2" class="bulleted-list"><li style="list-style-type:disc"><strong>文件头部注释</strong>：在每个 HTML 文件的开头添加文件描述，包括文件用途、作者、最后修改日期、版本等信息。</li></ul><ul id="1e6a416e-6161-809c-bc12-fd17e1f5f80a" class="bulleted-list"><li style="list-style-type:disc"><strong>代码段注释</strong>：对复杂的逻辑或关键代码段进行适当注释，简洁明了地解释其作用。</li></ul><ul id="1e6a416e-6161-8070-9530-e9743cc55fea" class="bulleted-list"><li style="list-style-type:disc"><strong>遵循项目的注释规范</strong>，如统一注释风格、格式等（见具体样例）</li></ul><p id="1e6a416e-6161-80ef-9f96-cb41c91d13e9" class="">推荐使用Better Comments 以及 Todo Tree两个插件，按照要求备注注释，负责人看到便会处理</p><figure id="1e6a416e-6161-80fd-85b6-ea6bcac7f681" class="image"><a href="image.png"><img style="width:258px" src="image.png"/></a></figure><figure id="1e6a416e-6161-8029-a6e1-f9255e37f17d" class="image"><a href="image%201.png"><img style="width:248px" src="image%201.png"/></a></figure><figure id="1e6a416e-6161-80fb-a4d7-dc1ac4fb64bb" class="image"><a href="c7051cda20fd596b79b8a286df15ec4.png"><img style="width:512.984375px" src="c7051cda20fd596b79b8a286df15ec4.png"/></a></figure><p id="1e6a416e-6161-80fa-a9c1-c2bb5151f24a" class="">
+</p><p id="1e6a416e-6161-80e1-a205-ecbb909d26dd" class="">文件头部样式正确案例：</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8058-b301-f6c0f9ddbc26" class="code"><code class="language-HTML">&lt;!--
+  文件: index.html
+  描述: 网站主页
+  作者: 张三
+  日期: 2025-05-01
+--&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;首页&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;欢迎来到我的网站&lt;/h1&gt;
+    &lt;/header&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="1e6a416e-6161-802e-ac1f-ef4cc31de528" class="">
+</p><h2 id="1e6a416e-6161-80b6-b58b-f7e6b91a61c0" class="">6. 文件结构与模块化</h2><p id="1e6a416e-6161-8090-a5a5-cc260bc9d78a" class="">保持文件结构清晰，确保 HTML 文件结构与样式、脚本等资源文件分离,使用文件夹组织代码，按功能模块分开 HTML、CSS 和 JavaScript 文件。推荐安装vscode icons插件</p><figure id="1e6a416e-6161-80f8-9699-fd1d34600315" class="image"><a href="image%202.png"><img style="width:238px" src="image%202.png"/></a></figure><p id="1e6a416e-6161-80ed-823d-fb04d7e9e343" class="">推荐结构：</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-801b-ba1e-dddfb8cad5db" class="code"><code class="language-HTML">/project
+    /css
+        styles.css
+    /js
+        main.js
+    index.html</code></pre><h1 id="1e6a416e-6161-805a-86f3-c6a0b75b8269" class="">CSS编码规范</h1><h2 id="1e6a416e-6161-8009-9bac-f6d24c1d3bb0" class="">1. <strong>禁止使用内联样式</strong></h2><ul id="1e6a416e-6161-805f-8bbb-ea28b36f8bf3" class="bulleted-list"><li style="list-style-type:disc">严禁在 HTML 标签中使用内联样式（<code>style</code> 属性），所有样式应通过外部 CSS 文件或 <code>&lt;style&gt;</code> 标签进行定义；</li></ul><ul id="1e6a416e-6161-80d3-882b-f017ee582cda" class="bulleted-list"><li style="list-style-type:disc">优先使用类名和 ID 来控制样式，保持结构与样式分离。</li></ul><p id="1e6a416e-6161-8033-93c8-f956e6630140" class="">
+</p><p id="1e6a416e-6161-801b-bd60-fc286d9dc6d6" class=""><strong>错误示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8044-b34b-f3bebb92bcb1" class="code"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;div style=&quot;width: 100%; margin: 0 auto;&quot;&gt;
+    &lt;h1&gt;欢迎来到我的网站&lt;/h1&gt;
+&lt;/div&gt;
+</code></pre><p id="1e6a416e-6161-80a6-8f7a-d81405b8a098" class=""><strong>正确示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-80a5-8ba0-ef7c335ba4b9" class="code"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;div class=&quot;container&quot;&gt;
+    &lt;h1&gt;欢迎来到我的网站&lt;/h1&gt;
+&lt;/div&gt;
+</code></pre><h2 id="1e6a416e-6161-807e-ad8a-e27be2650805" class="">2. <strong>禁止滥用 </strong><code><strong>!important</strong></code></h2><ul id="1e6a416e-6161-80c2-9d36-e87f1a226937" class="bulleted-list"><li style="list-style-type:disc"><code>!important</code> 仅应在特殊情况下使用，例如当某些样式无法通过常规优先级规则覆盖时。</li></ul><ul id="1e6a416e-6161-8071-ad58-fd02ecef4d51" class="bulleted-list"><li style="list-style-type:disc">过多使用 <code>!important</code> 会导致样式优先级混乱，增加维护的复杂性。</li></ul><ul id="1e6a416e-6161-809d-bfea-d82a7853abd5" class="bulleted-list"><li style="list-style-type:disc">使用 <code>!important</code> 前，应与团队成员沟通，确保其必要性和正确性。</li></ul><p id="1e6a416e-6161-8022-a596-ee7bdbc42002" class="">
+</p><p id="1e6a416e-6161-8072-99b3-d4644f77091c" class="">错误案例：</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-80b0-86e9-f022b93e07fe" class="code"><code class="language-CSS" style="white-space:pre-wrap;word-break:break-all">.button {
+    background-color: blue !important;
+    color: white !important;
+}
+</code></pre><p id="1e6a416e-6161-80c6-b60b-dbd838a73ef2" class=""><strong>正确示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-803a-8b3c-fcb61805a5ab" class="code"><code class="language-CSS" style="white-space:pre-wrap;word-break:break-all">.button {
+    background-color: blue;
+    color: white;
+}
+
+/* 在某些极端情况下，如果确实需要强制覆盖，可以使用 */
+.header {
+    font-size: 24px !important;
+}
+</code></pre><h2 id="1e6a416e-6161-80e0-867d-dd2343c45af2" class="">4. <strong>遵循 BEM（块、元素、修饰符）命名规范</strong></h2><p id="1e6a416e-6161-80ee-88ae-ed83bb2e1277" class=""><strong>（尽量保证就好，最好能列一个类名的映射表，避免其他成员使用时重复命名）</strong></p><ul id="1e6a416e-6161-80cc-9a72-c33c00b072c0" class="bulleted-list"><li style="list-style-type:disc">BEM 是一种推荐的命名方法，旨在提高 HTML 和 CSS 代码的可读性和可维护性。每个类名都应符合 <code>block__element--modifier</code> 的格式，避免全局样式污染。</li></ul><p id="1e6a416e-6161-8059-ab01-d1f0c6545bd5" class=""><strong>命名示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-80ca-a239-ca0fdae59ff3" class="code"><code class="language-CSS" style="white-space:pre-wrap;word-break:break-all">/* Block */
+.button {}
+
+/* Element */
+.button__icon {}
+
+/* Modifier */
+.button--primary {}
+</code></pre><p id="1e6a416e-6161-801c-b499-f6985c47a39f" class=""><strong>HTML 结构示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8027-be87-f952f3dc62b6" class="code"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;button class=&quot;button button--primary&quot;&gt;
+    &lt;span class=&quot;button__icon&quot;&gt;&lt;/span&gt;
+    提交
+&lt;/button&gt;
+</code></pre><p id="1e6a416e-6161-801f-85e3-c39ec7dc9b2f" class=""><strong>避免的命名示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8045-b62b-e0a15a58cccf" class="code"><code class="language-CSS" style="white-space:pre-wrap;word-break:break-all">.red-button { } /* 过于具体，不具备复用性 */
+</code></pre><h2 id="1e6a416e-6161-8071-96e8-ed39ef6b3e9a" class="">5. <strong>避免使用过度嵌套</strong></h2><ul id="1e6a416e-6161-807d-a75b-fc5db9974a13" class="bulleted-list"><li style="list-style-type:disc">CSS 选择器的嵌套层级不应超过 3 层。过多的嵌套会导致样式的复杂性增加，也影响选择器的效率。</li></ul><ul id="1e6a416e-6161-80ef-b0b6-eb72accaef57" class="bulleted-list"><li style="list-style-type:disc">使用组合选择器和子选择器时，要保持简洁和直观。</li></ul><p id="1e6a416e-6161-80d6-a2e5-e25ade23867c" class=""><strong>正确示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8033-a59f-c403b127cc86" class="code"><code class="language-CSS" style="white-space:pre-wrap;word-break:break-all">.card {
+    background-color: white;
+}
+
+.card__title {
+    font-size: 20px;
+}
+</code></pre><p id="1e6a416e-6161-8055-b8eb-f306b952a0c1" class=""><strong>错误示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8047-a80f-e40ca150c74d" class="code"><code class="language-CSS" style="white-space:pre-wrap;word-break:break-all">.card .card__title .card__subtitle {
+    font-size: 14px;
+}
+</code></pre><h2 id="1e6a416e-6161-80f9-96c7-f0524cffca1a" class="">6. 尽量<strong>保持样式表结构清晰</strong></h2><ul id="1e6a416e-6161-80c9-af23-dca23d576aed" class="bulleted-list"><li style="list-style-type:disc">将样式表划分为多个模块，根据功能将相关的样式分开。例如，布局、排版、按钮、表单等模块应有各自的 CSS 文件，保持代码的模块化和清晰。</li></ul><ul id="1e6a416e-6161-801c-8162-d0a052158056" class="bulleted-list"><li style="list-style-type:disc">在单个样式文件中，按以下顺序组织内容：<ol type="1" id="1e6a416e-6161-80ed-a34e-c222ea4b54c1" class="numbered-list" start="1"><li>重置/标准化样式</li></ol><ol type="1" id="1e6a416e-6161-80a9-b591-e38ca4226340" class="numbered-list" start="2"><li>全局设置（字体、颜色、背景等）</li></ol><ol type="1" id="1e6a416e-6161-8016-a649-daac19c5c279" class="numbered-list" start="3"><li>布局样式</li></ol><ol type="1" id="1e6a416e-6161-80b1-8cb6-e072daf48f43" class="numbered-list" start="4"><li>组件样式</li></ol><ol type="1" id="1e6a416e-6161-8035-b9f3-fe5895a0cfc3" class="numbered-list" start="5"><li>状态样式（如 <code>:hover</code>, <code>:active</code> 等）</li></ol><ol type="1" id="1e6a416e-6161-802d-a70a-e320cfb39d84" class="numbered-list" start="6"><li>辅助样式（如动画、响应式布局）</li></ol></li></ul><p id="1e6a416e-6161-8035-9e18-f9508a8f4572" class=""><strong>正确示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8070-b188-de8c37ed1ebe" class="code"><code class="language-CSS" style="white-space:pre-wrap;word-break:break-all">/* Reset styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Component styles */
+.button {
+    background-color: blue;
+    color: white;
+}
+</code></pre><h2 id="1e6a416e-6161-80bd-a3a2-ff08feed8a74" class="">7. <strong>使用相对单位而非固定单位</strong></h2><ul id="1e6a416e-6161-80c8-8ddb-d20097f9479c" class="bulleted-list"><li style="list-style-type:disc">为了提高页面的响应性，保证网页在其他平台可以正常加载，尽量使用相对单位（如 <code>em</code>, <code>rem</code>, <code>%</code>, <code>vw</code>, <code>vh</code>）而非固定单位（如 <code>px</code>）。例如，使用 <code>rem</code> 或 <code>em</code> 设置字体大小和间距。</li></ul><p id="1e6a416e-6161-8087-b0b7-ce8f9f3609fd" class=""><strong>正确示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8028-9ef1-faa2246e95be" class="code"><code class="language-CSS" style="white-space:pre-wrap;word-break:break-all">body {
+    font-size: 1rem;
+}
+
+.container {
+    width: 80%;
+}
+</code></pre><p id="1e6a416e-6161-8023-a660-fb5081324ece" class=""><strong>错误示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-806e-b817-e718909af302" class="code"><code class="language-CSS" style="white-space:pre-wrap;word-break:break-all">body {
+    font-size: 16px;
+}
+
+.container {
+    width: 960px;
+}
+</code></pre><h2 id="1e6a416e-6161-80bd-83a2-db90de461b97" class="">9. <strong>注释和文档</strong></h2><ul id="1e6a416e-6161-80b2-9428-e1f77f92d34b" class="bulleted-list"><li style="list-style-type:disc">对于复杂的样式或有特别需求的代码段，添加清晰的注释。</li></ul><ul id="1e6a416e-6161-80ec-81e7-ed50381dfb10" class="bulleted-list"><li style="list-style-type:disc">文档化 CSS 文件，特别是大型项目中，可以在每个模块或功能部分的开始处添加简短的说明。</li></ul><p id="1e6a416e-6161-80c3-a69f-efedf51f30b3" class=""><strong>正确示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8028-a5fd-ff4068b9c162" class="code"><code class="language-CSS" style="white-space:pre-wrap;word-break:break-all">/* 主要按钮样式 */
+.button {
+    background-color: blue;
+    color: white;
+}
+
+/* 页面头部 */
+header {
+    background-color: black;
+}
+</code></pre><h2 id="1e6a416e-6161-80ee-9d9a-fd37eac8e003" class="">10. <strong>响应式设计</strong></h2><ul id="1e6a416e-6161-802a-ac37-e7b1fb28b7ee" class="bulleted-list"><li style="list-style-type:disc">使用媒体查询来确保页面在不同屏幕尺寸下的适配。对于移动端友好的页面，应优先设计移动端布局，然后根据需要调整桌面端布局。</li></ul><p id="1e6a416e-6161-805e-b28c-fdc42677a654" class=""><strong>正确示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-809b-8f5a-fbc785d65465" class="code"><code class="language-CSS" style="white-space:pre-wrap;word-break:break-all">/* 基础样式 */
+.container {
+    width: 100%;
+}
+
+/* 小屏幕 */
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+}
+
+/* 大屏幕 */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+    }
+}</code></pre><h1 id="1e6a416e-6161-809e-ba61-c58765706af1" class="">JavaScript编码规范</h1><p id="1e6a416e-6161-8027-8f0d-dc93eb51bb10" class="">代码一定要让人能看懂的，可读性优先于简洁性</p><p id="1e6a416e-6161-8022-9fba-ffe03a89d190" class="">保持一致性，团队统一使用 ESLint + Prettier 工具统一风格</p><p id="1e6a416e-6161-80cc-8f31-cb5436bb18ec" class="">不要有冗长复杂的逻辑嵌套的代码</p><h2 id="1e6a416e-6161-803f-b9ef-de451e0e6903" class="">1、变量声明规范</h2><h3 id="1e6a416e-6161-8044-8c92-c3f00e1be86d" class="">推荐使用</h3><ul id="1e6a416e-6161-80e2-a4b7-c9fa6e722589" class="bulleted-list"><li style="list-style-type:disc"><code>const</code>：用于不会被重新赋值的常量（默认首选）</li></ul><ul id="1e6a416e-6161-80c6-b6b2-deb1336696ca" class="bulleted-list"><li style="list-style-type:disc"><code>let</code>：用于需要重新赋值的变量</li></ul><ul id="1e6a416e-6161-80b0-a6f5-f47f4c95b23d" class="bulleted-list"><li style="list-style-type:disc">减少使用 <code>var</code></li></ul><h2 id="1e6a416e-6161-802b-8f2a-e66b1c9dcbf6" class="">2、命名规范</h2><h3 id="1e6a416e-6161-806e-b425-c0d774bf0bb2" class="">1. <strong>命名风格</strong></h3><table id="1e6a416e-6161-8090-b53a-c3e957a3ee17" class="simple-table"><tbody><tr id="1e6a416e-6161-8021-9db4-cf07828dda0b"><td id="~B}|" class="">类型</td><td id="^qgT" class="">命名风格</td><td id="^p;=" class="">示例</td></tr><tr id="1e6a416e-6161-808d-8c7d-c36eecb08ece"><td id="~B}|" class="">变量名</td><td id="^qgT" class=""><code>camelCase</code></td><td id="^p;=" class=""><code>userList</code>, <code>mapLayer</code></td></tr><tr id="1e6a416e-6161-8054-b203-f370eb7e153d"><td id="~B}|" class="">函数名</td><td id="^qgT" class=""><code>camelCase</code></td><td id="^p;=" class=""><code>getUserData()</code></td></tr><tr id="1e6a416e-6161-8085-8c75-ef1e299e7fd0"><td id="~B}|" class="">常量名</td><td id="^qgT" class=""><code>UPPER_SNAKE</code></td><td id="^p;=" class=""><code>MAX_LAYER_COUNT</code></td></tr><tr id="1e6a416e-6161-80e3-b174-d4d3e950e8c9"><td id="~B}|" class="">类/构造函数</td><td id="^qgT" class=""><code>PascalCase</code></td><td id="^p;=" class=""><code>MapService</code>, <code>User</code></td></tr><tr id="1e6a416e-6161-8061-9a3d-c592d5621104"><td id="~B}|" class="">文件名</td><td id="^qgT" class=""><code>kebab-case</code></td><td id="^p;=" class=""><code>map-layer.js</code></td></tr></tbody></table><h3 id="1e6a416e-6161-80a4-9b96-d4e16cee5735" class="">2. <strong>函数命名</strong></h3><ul id="1e6a416e-6161-80da-9b07-e166a030a832" class="bulleted-list"><li style="list-style-type:disc">使用动词 + 名词的形式，突出函数的行为和作用</li></ul><ul id="1e6a416e-6161-8024-a03b-e24fa6f02c5c" class="bulleted-list"><li style="list-style-type:disc">保持简洁且语义明确</li></ul><p id="1e6a416e-6161-8023-aaf7-d7d6be3fb660" class=""><strong>正确示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8084-a05d-dadb0dd1b65b" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">function fetchUserData() {}
+function updateMapLayer() {}
+function calculateDistance() {}
+</code></pre><p id="1e6a416e-6161-80ca-b881-e508288d9889" class=""><strong>错误示例：</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8021-9ab1-f068ff473613" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">function data() {}         // 意图不明
+function doThing() {}      // 含义太泛
+</code></pre><hr id="1e6a416e-6161-801e-95c2-dc9574955acb"/><h2 id="1e6a416e-6161-8077-9fb4-c3d4371184f6" class="">3、函数与模块规范</h2><h3 id="1e6a416e-6161-806f-a0a0-dfb660c29a1a" class="">1. <strong>函数结构建议</strong></h3><ul id="1e6a416e-6161-804a-8167-fa35ecb48336" class="bulleted-list"><li style="list-style-type:disc">一个函数<strong>只做一件事</strong></li></ul><ul id="1e6a416e-6161-80b3-81bc-e263c6c19262" class="bulleted-list"><li style="list-style-type:disc">函数长度不宜过长</li></ul><ul id="1e6a416e-6161-803d-b6b0-c58fa37144f7" class="bulleted-list"><li style="list-style-type:disc">尽量使用函数参数解构</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-80c5-a267-fba083726882" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">function renderMap({ lat, lng, zoom }) {
+    map.setView([lat, lng], zoom);
+}
+</code></pre><h3 id="1e6a416e-6161-80b9-ae66-d3f80328e5ce" class="">2. <strong>箭头函数使用</strong></h3><ul id="1e6a416e-6161-8076-a37b-ea3afa096c2a" class="bulleted-list"><li style="list-style-type:disc">对于短小函数或回调推荐使用箭头函数</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-80de-9493-ec2491161848" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">const add = (a, b) =&gt; a + b;
+users.forEach(user =&gt; console.log(user.name));
+</code></pre><h3 id="1e6a416e-6161-80e5-a783-e7da7788f7ba" class="">3. <strong>模块导入导出</strong></h3><ul id="1e6a416e-6161-80d2-978f-c7cad0997405" class="bulleted-list"><li style="list-style-type:disc">推荐使用 ES Module (<code>import</code> / <code>export</code>) 而非 CommonJS（<code>require</code> / <code>module.exports</code>）</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-80dd-b08c-f3a9d2757695" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">// utils/math.js
+export function calculateArea(width, height) {
+    return width * height;
+}
+
+// main.js
+import { calculateArea } from &#x27;./utils/math.js&#x27;;
+</code></pre><hr id="1e6a416e-6161-8016-add1-e79ddb839cac"/><h2 id="1e6a416e-6161-8012-8796-f8c9e4f29731" class="">4、代码风格</h2><h3 id="1e6a416e-6161-801b-92d8-d2444e8a612a" class="">1. <strong>缩进与空格</strong></h3><ul id="1e6a416e-6161-800c-bf53-c59343fc9434" class="bulleted-list"><li style="list-style-type:disc">格式化文档</li></ul><ul id="1e6a416e-6161-8075-b2d6-cd24d40d7aee" class="bulleted-list"><li style="list-style-type:disc">运算符、关键字之间留空格，增强可读性</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-802d-9f2d-e5932207a490" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">if (user.isActive &amp;&amp; user.age &gt; 18) {
+    activateUser(user);
+}
+</code></pre><h3 id="1e6a416e-6161-8099-a64f-fc151ca342ce" class="">2. <strong>括号与换行</strong></h3><ul id="1e6a416e-6161-80f0-9bda-e00c6b2b4eba" class="bulleted-list"><li style="list-style-type:disc">使用花括号包裹所有语句块，即使是单行语句</li></ul><ul id="1e6a416e-6161-808e-9baa-f8660d465603" class="bulleted-list"><li style="list-style-type:disc">每个块状结构之间用空行分隔</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8072-a396-d964f0084b4b" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">if (isValid) {
+    saveData();
+} else {
+    showError();
+}
+</code></pre><hr id="1e6a416e-6161-8021-bfd8-c4457fbdafa0"/><h2 id="1e6a416e-6161-80b1-8077-d92c6690a520" class="">5、注释规范</h2><h3 id="1e6a416e-6161-80da-9451-ce8aec2b4e96" class="">1. <strong>单行注释</strong></h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8049-8e3d-fa968d8e4f3f" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">// 初始化地图
+const map = createMap();
+</code></pre><h3 id="1e6a416e-6161-80fa-b03e-dd5727969638" class="">2. <strong>多行注释</strong></h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-80d3-9d73-e8404be871d0" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">/**
+ * 计算两点之间的距离（单位：米）
+ * 使用 Haversine 公式
+ * @param {Object} pointA - 起点 {lat, lng}
+ * @param {Object} pointB - 终点 {lat, lng}
+ * @returns {number} 距离
+ */
+function calculateDistance(pointA, pointB) {
+    // ...
+}
+</code></pre><hr id="1e6a416e-6161-8090-8342-feaab7dea07c"/><h2 id="1e6a416e-6161-8066-8f66-dd1c9a912877" class="">6、错误处理与日志</h2><h3 id="1e6a416e-6161-8034-96b7-cc7ba8bd9a40" class="">1. <strong>使用 try/catch 捕获异常</strong></h3><ul id="1e6a416e-6161-8002-abb5-c5dc276263a8" class="bulleted-list"><li style="list-style-type:disc">异步函数应加错误处理，避免程序崩溃</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-8035-913f-d5c3ee399969" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">try {
+    const result = await fetchData();
+} catch (error) {
+    console.error(&#x27;数据请求失败：&#x27;, error);
+}
+</code></pre><h3 id="1e6a416e-6161-8003-920c-dabc96fa0619" class="">2. <strong>避免调试遗留代码</strong></h3><ul id="1e6a416e-6161-80d9-a414-de46dbc11af2" class="bulleted-list"><li style="list-style-type:disc">开发时可用 <code>console.log()</code>，但在提交代码前应清除所有调试日志</li></ul><hr id="1e6a416e-6161-8092-bcd0-f3dbee89e01e"/><h2 id="1e6a416e-6161-80fc-8030-fbdadda185f3" class="">7、数组与对象操作</h2><ul id="1e6a416e-6161-8035-aeec-d4a5c2f40d09" class="bulleted-list"><li style="list-style-type:disc">推荐使用 ES6 数组方法（<code>map</code>、<code>filter</code>、<code>reduce</code> 等），避免传统 <code>for</code> 循环除非性能关键</li></ul><ul id="1e6a416e-6161-8071-8162-d7747ab71143" class="bulleted-list"><li style="list-style-type:disc">对象赋值使用解构与展开（spread）操作符</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1e6a416e-6161-80f8-85a2-c9cebd7ccff2" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">const newUser = { ...user, isActive: true };
+const names = users.map(u =&gt; u.name);
+</code></pre><hr id="1e6a416e-6161-8049-87f6-ea0669bfe8b8"/><h1 id="1e6a416e-6161-80a3-8937-d2d07cc798d0" class="">Git团队协作与版本管理</h1><figure id="1e6a416e-6161-8026-8f07-c3fc692e11f8"><div class="block-color-orange source"><a href="%EF%BC%88%E5%B7%B2%E5%8E%8B%E7%BC%A9%EF%BC%89%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7Git.pdf">（已压缩）代码管理工具Git.pdf</a></div></figure><p id="1e6a416e-6161-80b3-ae77-d191773e9025" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
